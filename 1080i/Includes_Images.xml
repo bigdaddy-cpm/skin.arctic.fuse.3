@@ -415,6 +415,7 @@
 
     <variable name="Image_StartUp">
         <value condition="$EXP[Exp_StartUp_CustomImage]">$INFO[Skin.String(Startup.ImageFolder)]</value>
+        <value condition="!System.AddonIsEnabled(resource.images.arctic.splash)">special://skin/extras/backgrounds/blur/coal_blur.jpg</value>
         <!-- The built-in splash is composited by Background_StartUp_Layered. -->
         <value>$VAR[Image_StartUp_Layer_Sky]</value>
     </variable>

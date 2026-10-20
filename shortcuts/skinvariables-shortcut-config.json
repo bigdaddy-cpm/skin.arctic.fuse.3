@@ -1400,13 +1400,6 @@
             "link": "true"
         },
         {
-            "name": "Reboot to Android",
-            "path": "RebootToAndroid",
-            "icon": "special://skin/extras/icons/recycle.png",
-            "link": "true",
-            "rule": "System.Platform.Linux"
-        },
-        {
             "name": "Reload Skin",
             "path": "ReloadSkin",
             "icon": "special://skin/extras/icons/rotate.png",

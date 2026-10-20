@@ -9,15 +9,6 @@
             </value>
         </rule>
         <rule>
-            <condition>{item_path}==RebootToAndroid</condition>
-            <value>
-                <![CDATA[
-                <onclick>System.ExecWait("/usr/sbin/rebootfromnand")</onclick>
-                <onclick>Reboot()</onclick>
-                ]]>
-            </value>
-        </rule>
-        <rule>
             <condition>{item_path}==Custom_Submenu</condition>
             <value>
                 <![CDATA[

@@ -104,7 +104,13 @@
                 <fadetime>2000</fadetime>
                 <aspectratio>scale</aspectratio>
             </control>
-            <include>Background_StartUp_Layered</include>
+            <control type="image">
+                <description>Bundled fallback when the optional seasonal splash is unavailable</description>
+                <visible>!$EXP[Exp_StartUp_CustomImage] + !System.AddonIsEnabled(resource.images.arctic.splash)</visible>
+                <texture colordiffuse="$PARAM[colordiffuse]">special://skin/extras/backgrounds/blur/coal_blur.jpg</texture>
+                <aspectratio>scale</aspectratio>
+            </control>
+            <include condition="System.AddonIsEnabled(resource.images.arctic.splash)">Background_StartUp_Layered</include>
         </definition>
     </include>
 

@@ -67,7 +67,7 @@
     <include name="Background_StartUp_Layered">
         <control type="group">
             <description>Seasonal hourly weather splash; image-only alpha-over compositing</description>
-            <visible>!$EXP[Exp_StartUp_CustomImage]</visible>
+            <visible>!$EXP[Exp_StartUp_CustomImage] + System.AddonIsEnabled(resource.images.arctic.splash)</visible>
             <left>0</left>
             <top>0</top>
             <width>100%</width>

@@ -1,5 +1,59 @@
 
-# Arctic Fuse [![License](https://img.shields.io/badge/license-CC--NC--SA%204.0-green)](http://creativecommons.org/licenses/by-nc-sa/4.0/)
+# Arctic Fuse 3 (BigDaddy)
+
+LibreELEC adaptation of [CE-Repo's Arctic Fuse 3 (U3k)](https://github.com/CE-Repo/skin.arctic.fuse.3),
+originally by jurialmunkey, with U3k changes by jamal2362.
+Based on CE-Repo commit `27c0bd4e7459ea50a85217baad9d6e1a73b1d787` (20.3.4.1).
+
+## Target and installation
+
+Target: [CroqueMr LibreELEC x86 DV R1.0.0-Beta4](https://github.com/CroqueMr/libreelec-x86-DV/releases/tag/R1.0.0-Beta4),
+LibreELEC 13.0 with Kodi 22 RC1 and GUI API 5.18.0.
+Kodi declares backward compatibility with the skin's required GUI API 5.17.0;
+the helper dependency minimums have not been lowered.
+
+Install **Arctic Fuse 3 (BigDaddy)** from **Look and feel > Skin** in the
+bigdaddy-cpm Kodi repository at https://bigdaddy-cpm.github.io/.
+Its separate ID, `skin.arctic.fuse.3.bigdaddy`, keeps the original skin and its
+widget settings untouched. This skin starts with its own settings; it does not
+automatically copy the original configuration or switch the active skin.
+
+Required helpers remain Skin Variables 2.2.9+, Texture Maker 0.2.9+ and
+TMDbHelper 6.17.9+, plus the listed font/weather/studio resources.
+These were already present at sufficient versions in the target's October 19 log.
+For a fresh Kodi installation, install helpers from their official repositories first.
+
+## Adaptations
+
+- Distinct identity throughout shortcut generation, skin users, settings and version labels.
+- Platform-aware LibreELEC/CoreELEC/Kodi startup label and accurate Kodi build text.
+- Optional Arctic Splash resource: bundled static background works without it;
+  installing the resource enables the original seasonal/weather splash.
+- Removed the Android/NAND reboot shortcut from this LibreELEC-targeted fork.
+- Retained U3k artwork, information-bar features and the optional TinyPPI button.
+- Added conditional DV rendering, display, transport, profile, enhancement-layer
+  and render-usage fields to player information using Beta4's native window properties.
+  These fields hide when the build's enhanced player information is disabled or absent.
+  Beta4's native O-key handler still cycles from player information to its rendering menu.
+- Native Kodi video settings remain in use; no Dolby Vision renderer, firmware,
+  passthrough or playback pipeline changes are made by this skin.
+
+XML/JSON, identity, dependencies and ZIP layout are checked offline. Visual layout,
+remote navigation and playback overlays still require testing on the target box.
+
+## Validation and packaging
+
+```sh
+python tools/check_skin.py
+python tools/check_skin.py --build
+```
+
+The second command produces a reproducible installable ZIP in `dist/`.
+Publishing also requires updating the skin entry and checksum in the separate
+`bigdaddy-cpm.github.io` Kodi repository. Upstream-only repository dispatch has
+been replaced with validation, so this fork does not dispatch to the author's repository.
+
+## License and attribution
 
 This work is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/
 or send a letter to Creative Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.

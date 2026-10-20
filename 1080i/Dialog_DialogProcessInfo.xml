@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
+    <!-- CroqueMr LibreELEC DV Beta4 properties; absent on stock Kodi. -->
+    <include name="DialogProcessInfo_Items_DVObject">
+        <param name="visible">true</param>
+        <definition>
+            <item>
+                <label>$PARAM[label]</label>
+                <label2>$INFO[$PARAM[info]]</label2>
+                <visible>$PARAM[visible] + String.IsEqual(Window(playerprocessinfo).Property(DV.Enhanced),true) + !String.IsEmpty($PARAM[info])</visible>
+            </item>
+        </definition>
+    </include>
     <include name="DialogProcessInfo_Items_PVRObject">
         <item>
             <label>$PARAM[label]</label>
@@ -122,6 +133,40 @@
 
     <include name="DialogProcessInfo_Items">
         <content>
+
+            <include content="DialogProcessInfo_Items_DVObject">
+                <param name="label">$LOCALIZE[31980]</param>
+                <param name="info">Window(playerprocessinfo).Property(DV.Mode)</param>
+            </include>
+            <include content="DialogProcessInfo_Items_DVObject">
+                <param name="label">$LOCALIZE[31981]</param>
+                <param name="info">Window(playerprocessinfo).Property(DV.Display)</param>
+            </include>
+            <include content="DialogProcessInfo_Items_DVObject">
+                <param name="label">$LOCALIZE[31982]</param>
+                <param name="info">Window(playerprocessinfo).Property(DV.Transport)</param>
+            </include>
+            <include content="DialogProcessInfo_Items_DVObject">
+                <param name="label">$LOCALIZE[31983]</param>
+                <param name="info">Window(playerprocessinfo).Property(DV.Profile)</param>
+            </include>
+            <include content="DialogProcessInfo_Items_DVObject">
+                <param name="label">$LOCALIZE[31984]</param>
+                <param name="info">Window(playerprocessinfo).Property(DV.FEL)</param>
+            </include>
+            <include content="DialogProcessInfo_Items_DVObject">
+                <param name="label">$LOCALIZE[31985]</param>
+                <param name="info">Window(playerprocessinfo).Property(DV.GPURender)</param>
+                <param name="visible">String.IsEqual(Window(playerprocessinfo).Property(DV.GPUAvailable),true)</param>
+            </include>
+            <include content="DialogProcessInfo_Items_DVObject">
+                <param name="label">$LOCALIZE[31986]</param>
+                <param name="info">Window(playerprocessinfo).Property(DV.TVProfile)</param>
+            </include>
+            <include content="DialogProcessInfo_Items_DVObject">
+                <param name="label">$LOCALIZE[31987]</param>
+                <param name="info">Window(playerprocessinfo).Property(DV.SignalIntent)</param>
+            </include>
 
             <!-- Process -->
             <item>
