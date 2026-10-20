@@ -30,7 +30,10 @@ For a fresh Kodi installation, install helpers from their official repositories 
 - Optional Arctic Splash resource: bundled static background works without it;
   installing the resource enables the original seasonal/weather splash.
 - Removed the Android/NAND reboot shortcut from this LibreELEC-targeted fork.
-- Retained U3k artwork, information-bar features and the optional TinyPPI button.
+- Retained U3k artwork and information-bar features. The playback-info OSD button
+  prefers **BigDaddy Playback Info** when enabled (skin 1.0.1+), with the original
+  TinyPPI action as a fallback. Install the new overlay separately from
+  **Program add-ons** in the bigdaddy-cpm repository; no new mandatory dependency.
 - Added conditional DV rendering, display, transport, profile, enhancement-layer
   and render-usage fields to player information using Beta4's native window properties.
   These fields hide when the build's enhanced player information is disabled or absent.

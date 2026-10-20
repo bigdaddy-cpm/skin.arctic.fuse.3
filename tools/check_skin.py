@@ -61,6 +61,19 @@ def validate():
     settings = ET.parse(ROOT / '1080i/Settings.xml')
     assert any(node.text == 'RunAddon(service.libreelec.settings)' for node in settings.findall('.//onclick'))
     assert not (ROOT / '.github/workflows/dispatch_to_repo.yml').exists()
+    ppi = ET.parse(ROOT / '1080i/Includes_U3k.xml').find("include[@name='PPI_Button']")
+    button = ppi.find("control[@id='6009']")
+    actions = button.findall('onclick')
+    assert actions[1].text == 'RunScript(script.bigdaddy.playbackinfo)'
+    assert actions[1].attrib['condition'] == 'System.AddonIsEnabled(script.bigdaddy.playbackinfo)'
+    assert actions[2].text == 'RunScript(script.tinyppi,dialog)'
+    assert actions[2].attrib['condition'].startswith('!System.AddonIsEnabled(script.bigdaddy.playbackinfo) + ')
+    assert button.findtext('visible') == 'System.AddonIsEnabled(script.bigdaddy.playbackinfo) | System.AddonIsEnabled(script.tinyppi)'
+    assert ppi.find("include/param[@name='visible']").text == button.findtext('visible')
+    assert (ROOT / 'extras/icons/sysinfo.png').is_file()
+    nav = ET.parse(ROOT / '1080i/VideoOSD.xml').find(".//control[@id='6091']")
+    assert nav.find("onleft[.='6009']").attrib['condition'] == button.findtext('visible')
+    assert nav.find("onleft[.='6008']").attrib['condition'] == '!System.AddonIsEnabled(script.bigdaddy.playbackinfo) + !System.AddonIsEnabled(script.tinyppi)'
     process = ET.parse(ROOT / '1080i/Dialog_DialogProcessInfo.xml')
     dv = process.find("include[@name='DialogProcessInfo_Items_DVObject']/definition/item")
     assert 'DV.Enhanced' in dv.findtext('visible')

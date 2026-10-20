@@ -1,4 +1,4 @@
-<addon id="skin.arctic.fuse.3.bigdaddy" name="Arctic Fuse 3 (BigDaddy)" provider-name="jurialmunkey, jamal2362, bigdaddy-cpm" version="1.0.0">
+<addon id="skin.arctic.fuse.3.bigdaddy" name="Arctic Fuse 3 (BigDaddy)" provider-name="jurialmunkey, jamal2362, bigdaddy-cpm" version="1.0.1">
     <requires>
         <import addon="xbmc.gui" version="5.17.0" />
         <import addon="script.skinvariables" version="2.2.9" />
@@ -34,7 +34,7 @@
         <license>Creative Commons Attribution Non-Commercial Share-Alike 4.0</license>
         <forum />
         <source>https://github.com/bigdaddy-cpm/skin.arctic.fuse.3</source>
-        <news>1.0.0: LibreELEC DV Beta4 / Kodi 22 compatibility packaging. Separate skin identity, platform-aware labels, optional seasonal splash with bundled fallback, and no Android reboot action.</news>
+        <news>1.0.1: Playback-info OSD button now prefers BigDaddy Playback Info when installed; retains TinyPPI fallback. LibreELEC DV Beta4 / Kodi 22 adaptation with separate skin identity and native DV diagnostics.</news>
         <assets>
             <icon>icon.png</icon>
             <fanart>fanart.jpg</fanart>
