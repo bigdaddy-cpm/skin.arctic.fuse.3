@@ -3,7 +3,8 @@
 
 LibreELEC adaptation of [CE-Repo's Arctic Fuse 3 (U3k)](https://github.com/CE-Repo/skin.arctic.fuse.3),
 originally by jurialmunkey, with U3k changes by jamal2362.
-Based on CE-Repo commit `27c0bd4e7459ea50a85217baad9d6e1a73b1d787` (20.3.4.1).
+Updated through CE-Repo commit `9c5b98fa44d5918a059e395617d6359e73933d54`
+(U3k 20.3.4.8 / original Arctic Fuse 3.4.8), released as BigDaddy 1.0.2.
 
 ## Target and installation
 
@@ -27,8 +28,10 @@ For a fresh Kodi installation, install helpers from their official repositories 
 
 - Distinct identity throughout shortcut generation, skin users, settings and version labels.
 - Platform-aware LibreELEC/CoreELEC/Kodi startup label and accurate Kodi build text.
-- Optional Arctic Splash resource: bundled static background works without it;
-  installing the resource enables the original seasonal/weather splash.
+- Optional Arctic Splash 1.0.6+ and Arctic Weather 1.0.4+ resources: bundled
+  backgrounds keep startup and weather cards usable without them. Install/update
+  these resources from their upstream repository for animated weather artwork.
+  No resource packages are silently downloaded or mirrored by this fork.
 - Removed the Android/NAND reboot shortcut from this LibreELEC-targeted fork.
 - Retained U3k artwork and information-bar features. The playback-info OSD button
   prefers **BigDaddy Playback Info** when enabled (skin 1.0.1+), with the original

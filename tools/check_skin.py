@@ -24,6 +24,9 @@ def validate():
     assert imports['script.texturemaker']['version'] == '0.2.9'
     assert imports['plugin.video.themoviedb.helper']['version'] == '6.17.9'
     assert imports['resource.images.arctic.splash']['optional'] == 'true'
+    assert imports['resource.images.arctic.splash']['version'] == '1.0.6'
+    assert imports['resource.images.arctic.weather']['optional'] == 'true'
+    assert imports['resource.images.arctic.weather']['version'] == '1.0.4'
     assert manifest.find("extension[@point='xbmc.addon.metadata']/license").text == 'Creative Commons Attribution Non-Commercial Share-Alike 4.0'
     assert (ROOT / 'LICENSE.txt').is_file()
     count_xml = count_json = 0
@@ -53,11 +56,16 @@ def validate():
     seasonal = [node for node in background.findall('.//include')
                 if (node.text or '').strip() == 'Background_StartUp_Layered']
     assert len(seasonal) == 1
-    assert seasonal[0].attrib['condition'] == 'System.AddonIsEnabled(resource.images.arctic.splash)'
+    assert seasonal[0].attrib['condition'] == '!$EXP[Exp_StartUp_CustomImage] + System.AddonIsEnabled(resource.images.arctic.splash)'
     fallback = next(node for node in background.findall('.//control')
                     if node.findtext('texture') == 'special://skin/extras/backgrounds/blur/coal_blur.jpg')
     assert '!System.AddonIsEnabled(resource.images.arctic.splash)' in fallback.findtext('visible')
     assert '!$EXP[Exp_StartUp_CustomImage]' in fallback.findtext('visible')
+    weather = ET.parse(ROOT / '1080i/Includes_Weather.xml')
+    artwork = weather.find("include[@name='Weather_Card_Artwork']/definition")
+    assert artwork.findtext('control/visible') == '!System.AddonIsEnabled(resource.images.arctic.weather)'
+    assert all('System.AddonIsEnabled(resource.images.arctic.weather)' in node.attrib['condition']
+               for node in artwork.findall('include'))
     settings = ET.parse(ROOT / '1080i/Settings.xml')
     assert any(node.text == 'RunAddon(service.libreelec.settings)' for node in settings.findall('.//onclick'))
     assert not (ROOT / '.github/workflows/dispatch_to_repo.yml').exists()
