@@ -22,9 +22,9 @@ def validate():
     assert imports['xbmc.gui']['version'] == '5.17.0'
     assert imports['script.skinvariables']['version'] == '2.2.9'
     assert imports['script.texturemaker']['version'] == '0.2.9'
-    assert imports['plugin.video.themoviedb.helper']['version'] == '6.17.9'
+    assert imports['plugin.video.themoviedb.helper']['version'] == '6.19.2'
     assert imports['resource.images.arctic.splash']['optional'] == 'true'
-    assert imports['resource.images.arctic.splash']['version'] == '1.0.6'
+    assert imports['resource.images.arctic.splash']['version'] == '1.1.0'
     assert imports['resource.images.arctic.weather']['optional'] == 'true'
     assert imports['resource.images.arctic.weather']['version'] == '1.0.4'
     assert manifest.find("extension[@point='xbmc.addon.metadata']/license").text == 'Creative Commons Attribution Non-Commercial Share-Alike 4.0'
@@ -35,6 +35,7 @@ def validate():
             if path.suffix not in ('.xml', '.json'):
                 continue
             text = path.read_text(encoding='utf-8-sig')
+            assert not re.search(r'(?m)^(<<<<<<< |=======\s*$|>>>>>>> )', text), path
             assert not re.search(r'skin\.arctic\.fuse\.3(?!\.bigdaddy)', text), path
             assert 'rebootfromnand' not in text, path
             assert 'RebootToAndroid' not in text, path
@@ -54,13 +55,18 @@ def validate():
     assert (ROOT / 'extras/backgrounds/blur/coal_blur.jpg').is_file()
     background = ET.parse(ROOT / '1080i/Includes_Background.xml')
     seasonal = [node for node in background.findall('.//include')
-                if (node.text or '').strip() == 'Background_StartUp_Layered']
+                if (node.text or '').strip() == 'Background_StartUp_SelectedScene']
     assert len(seasonal) == 1
     assert seasonal[0].attrib['condition'] == '!$EXP[Exp_StartUp_CustomImage] + System.AddonIsEnabled(resource.images.arctic.splash)'
     fallback = next(node for node in background.findall('.//control')
                     if node.findtext('texture') == 'special://skin/extras/backgrounds/blur/coal_blur.jpg')
     assert '!System.AddonIsEnabled(resource.images.arctic.splash)' in fallback.findtext('visible')
     assert '!$EXP[Exp_StartUp_CustomImage]' in fallback.findtext('visible')
+    scenes = ET.parse(ROOT / '1080i/Includes_StartUp_Scenes.xml')
+    selected = scenes.find("include[@name='Background_StartUp_SelectedScene']/definition")
+    assert {node.text for node in selected.findall('include')} == {
+        'Background_StartUp_Scene_Tokyo', 'Background_StartUp_Scene_Countryside',
+        'Background_StartUp_Layered'}
     weather = ET.parse(ROOT / '1080i/Includes_Weather.xml')
     artwork = weather.find("include[@name='Weather_Card_Artwork']/definition")
     assert artwork.findtext('control/visible') == '!System.AddonIsEnabled(resource.images.arctic.weather)'

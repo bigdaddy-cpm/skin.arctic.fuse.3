@@ -3,8 +3,10 @@
 
 LibreELEC adaptation of [CE-Repo's Arctic Fuse 3 (U3k)](https://github.com/CE-Repo/skin.arctic.fuse.3),
 originally by jurialmunkey, with U3k changes by jamal2362.
-Updated through CE-Repo commit `9c5b98fa44d5918a059e395617d6359e73933d54`
-(U3k 20.3.4.8 / original Arctic Fuse 3.4.8), released as BigDaddy 1.0.2.
+Updated through CE-Repo commit `d2b1081043a0cb59353e99d3f261c0f5e7998c77`
+(U3k 20.3.4.13 / original Arctic Fuse 3.4.13), released as BigDaddy 1.0.3.
+Includes hub preload/settings-focus fixes, visible-only widget spinners,
+selectable splash scenes, outlined focus styling and refreshed statistics.
 
 ## Target and installation
 
@@ -20,15 +22,16 @@ widget settings untouched. This skin starts with its own settings; it does not
 automatically copy the original configuration or switch the active skin.
 
 Required helpers remain Skin Variables 2.2.9+, Texture Maker 0.2.9+ and
-TMDbHelper 6.17.9+, plus the listed font/weather/studio resources.
-These were already present at sufficient versions in the target's October 19 log.
+TMDbHelper 6.19.2+, plus the listed font/weather/studio resources.
+Update TMDbHelper from its official repository before installing this release
+if your installed version is older than 6.19.2.
 For a fresh Kodi installation, install helpers from their official repositories first.
 
 ## Adaptations
 
 - Distinct identity throughout shortcut generation, skin users, settings and version labels.
 - Platform-aware LibreELEC/CoreELEC/Kodi startup label and accurate Kodi build text.
-- Optional Arctic Splash 1.0.6+ and Arctic Weather 1.0.4+ resources: bundled
+- Optional Arctic Splash 1.1.0+ and Arctic Weather 1.0.4+ resources: bundled
   backgrounds keep startup and weather cards usable without them. Install/update
   these resources from their upstream repository for animated weather artwork.
   No resource packages are silently downloaded or mirrored by this fork.

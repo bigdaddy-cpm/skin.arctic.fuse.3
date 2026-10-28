@@ -120,7 +120,7 @@
                 <texture colordiffuse="$PARAM[colordiffuse]">special://skin/extras/backgrounds/blur/coal_blur.jpg</texture>
                 <aspectratio>scale</aspectratio>
             </control>
-            <include condition="!$EXP[Exp_StartUp_CustomImage] + System.AddonIsEnabled(resource.images.arctic.splash)">Background_StartUp_Layered</include>
+            <include condition="!$EXP[Exp_StartUp_CustomImage] + System.AddonIsEnabled(resource.images.arctic.splash)">Background_StartUp_SelectedScene</include>
         </definition>
     </include>
 
