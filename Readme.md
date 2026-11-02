@@ -3,10 +3,10 @@
 
 LibreELEC adaptation of [CE-Repo's Arctic Fuse 3 (U3k)](https://github.com/CE-Repo/skin.arctic.fuse.3),
 originally by jurialmunkey, with U3k changes by jamal2362.
-Updated through CE-Repo commit `d2b1081043a0cb59353e99d3f261c0f5e7998c77`
-(U3k 20.3.4.13 / original Arctic Fuse 3.4.13), released as BigDaddy 1.0.3.
-Includes hub preload/settings-focus fixes, visible-only widget spinners,
-selectable splash scenes, outlined focus styling and refreshed statistics.
+Updated through CE-Repo commit `a93ec85f35be39e0259f3343ce3f32f428fdbedf`
+(U3k 20.3.4.15 / original Arctic Fuse 3.4.15), released as BigDaddy 1.0.4.
+Includes the setup wizard, reorganized settings, watched-date navigation,
+ranked/stack/disc widget styles and settings/search navigation fixes.
 
 ## Target and installation
 

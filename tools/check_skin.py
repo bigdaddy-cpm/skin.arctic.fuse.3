@@ -52,6 +52,24 @@ def validate():
                 assert (ROOT / '1080i' / filename).is_file(), (path, filename)
     generator = json.loads((ROOT / 'shortcuts/skinvariables-generator.json').read_text())
     assert generator['skinid'] == SKIN_ID
+    # The new wizard must not automatically reconfigure existing installations.
+    startup = json.loads((ROOT / 'shortcuts/skinvariables-startup.json').read_text())
+    wizard_rules = []
+    def visit_actions(value, rules=()):
+        if isinstance(value, dict):
+            rules = rules + tuple(value.get('rules', ()))
+            for key, child in value.items():
+                if key != 'rules':
+                    visit_actions(child, rules)
+        elif isinstance(value, list):
+            for child in value:
+                visit_actions(child, rules)
+        elif value == 'Skin.SetBool(SetupWizard.Pending)':
+            wizard_rules.append(rules)
+    visit_actions(startup)
+    assert wizard_rules and all('!Skin.HasSetting(DefaultConfig.InitDone)' in rules for rules in wizard_rules)
+    settings_info = ET.parse(ROOT / '1080i/Includes_Settings.xml')
+    assert any(SKIN_ID in (node.text or '') for node in settings_info.findall(".//param[@name='fallback']"))
     assert (ROOT / 'extras/backgrounds/blur/coal_blur.jpg').is_file()
     background = ET.parse(ROOT / '1080i/Includes_Background.xml')
     seasonal = [node for node in background.findall('.//include')
