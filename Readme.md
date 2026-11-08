@@ -3,10 +3,10 @@
 
 LibreELEC adaptation of [CE-Repo's Arctic Fuse 3 (U3k)](https://github.com/CE-Repo/skin.arctic.fuse.3),
 originally by jurialmunkey, with U3k changes by jamal2362.
-Updated through CE-Repo commit `a93ec85f35be39e0259f3343ce3f32f428fdbedf`
-(U3k 20.3.4.15 / original Arctic Fuse 3.4.15), released as BigDaddy 1.0.4.
-Includes the setup wizard, reorganized settings, watched-date navigation,
-ranked/stack/disc widget styles and settings/search navigation fixes.
+Updated through CE-Repo commit `1250842a4d88ba7ad1de68c486c9506cf49e1105`
+(U3k 20.3.4.18 / original Arctic Fuse 3.4.18), released as BigDaddy 1.0.5.
+Includes shelf/timeline/gatefold widgets, in-window hub management,
+episode-artwork handling and search/loading/submenu fixes.
 
 ## Target and installation
 
@@ -21,10 +21,10 @@ Its separate ID, `skin.arctic.fuse.3.bigdaddy`, keeps the original skin and its
 widget settings untouched. This skin starts with its own settings; it does not
 automatically copy the original configuration or switch the active skin.
 
-Required helpers remain Skin Variables 2.2.9+, Texture Maker 0.2.9+ and
+Required helpers are Skin Variables 2.2.12+, Texture Maker 0.2.9+ and
 TMDbHelper 6.19.2+, plus the listed font/weather/studio resources.
-Update TMDbHelper from its official repository before installing this release
-if your installed version is older than 6.19.2.
+Update Skin Variables and TMDbHelper from their official repositories before
+installing this release if your versions are below these minimums.
 For a fresh Kodi installation, install helpers from their official repositories first.
 
 ## Adaptations

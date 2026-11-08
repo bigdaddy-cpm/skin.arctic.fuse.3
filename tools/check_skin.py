@@ -20,7 +20,7 @@ def validate():
     assert 'jamal2362' in manifest.attrib['provider-name']
     imports = {node.attrib['addon']: node.attrib for node in manifest.findall('requires/import')}
     assert imports['xbmc.gui']['version'] == '5.17.0'
-    assert imports['script.skinvariables']['version'] == '2.2.9'
+    assert imports['script.skinvariables']['version'] == '2.2.12'
     assert imports['script.texturemaker']['version'] == '0.2.9'
     assert imports['plugin.video.themoviedb.helper']['version'] == '6.19.2'
     assert imports['resource.images.arctic.splash']['optional'] == 'true'
@@ -32,13 +32,15 @@ def validate():
     count_xml = count_json = 0
     for folder in ('1080i', 'shortcuts', 'colors', 'fonts'):
         for path in (ROOT / folder).rglob('*'):
-            if path.suffix not in ('.xml', '.json'):
+            if path.suffix not in ('.xml', '.json', '.xmltemplate'):
                 continue
             text = path.read_text(encoding='utf-8-sig')
             assert not re.search(r'(?m)^(<<<<<<< |=======\s*$|>>>>>>> )', text), path
             assert not re.search(r'skin\.arctic\.fuse\.3(?!\.bigdaddy)', text), path
             assert 'rebootfromnand' not in text, path
             assert 'RebootToAndroid' not in text, path
+            if path.suffix == '.xmltemplate':
+                continue  # Generator fragments are not standalone XML documents.
             if path.suffix == '.json':
                 json.loads(text)
                 count_json += 1
@@ -52,6 +54,28 @@ def validate():
                 assert (ROOT / '1080i' / filename).is_file(), (path, filename)
     generator = json.loads((ROOT / 'shortcuts/skinvariables-generator.json').read_text())
     assert generator['skinid'] == SKIN_ID
+    for entry in generator['genxml']:
+        assert (ROOT / 'shortcuts' / entry['datafile']).is_file(), entry
+    # New hub menus must stay in this fork's settings namespace and retain
+    # the existing hub identities, names, paths and enabled/disabled state.
+    paths = ET.parse(ROOT / '1080i/Includes_Paths.xml')
+    namespace = paths.find("variable[@name='Path_SkinVariables_SkinFolder']")
+    assert all((node.text or '').startswith(SKIN_ID) for node in namespace.findall('value'))
+    migration = json.loads((ROOT / 'shortcuts/skinvariables-migrate-hubs.json').read_text())
+    expected_hubs = {'1101', '1102', '1103', '1104', '1106', '1107', '1108', '1109'}
+    assert {item['window'] for item in migration['menu']} == expected_hubs
+    for item in migration['menu']:
+        window = item['window']
+        assert item['slot'] == window[-2:]
+        for key in ('label', 'icon', 'path', 'target', 'disabled'):
+            assert item[key] == '{%s_%s}' % (key, window)
+        for key, suffix in (('name', 'Name'), ('icon', 'Icon'), ('path', 'Shortcut.Path'),
+                            ('target', 'Shortcut.Target'), ('toggle', 'Toggle')):
+            assert migration['infolabels'][key + '_' + window] == 'Skin.String(HomeSwitcher.%s.%s)' % (window, suffix)
+    custom_dialog = ET.parse(ROOT / '1080i/Dialog_DialogCustom.xml')
+    assert not any((node.text or '').strip() in (
+        'DialogCustom_Settings_Items_ColourPresets', 'DialogCustom_Settings_Items_ColourHighlights')
+        for node in custom_dialog.findall('.//include'))
     # The new wizard must not automatically reconfigure existing installations.
     startup = json.loads((ROOT / 'shortcuts/skinvariables-startup.json').read_text())
     wizard_rules = []
