@@ -3,17 +3,17 @@
 
 LibreELEC adaptation of [CE-Repo's Arctic Fuse 3 (U3k)](https://github.com/CE-Repo/skin.arctic.fuse.3),
 originally by jurialmunkey, with U3k changes by jamal2362.
-Updated through CE-Repo commit `1250842a4d88ba7ad1de68c486c9506cf49e1105`
-(U3k 20.3.4.18 / original Arctic Fuse 3.4.18), released as BigDaddy 1.0.5.
-Includes shelf/timeline/gatefold widgets, in-window hub management,
-episode-artwork handling and search/loading/submenu fixes.
+Updated through CE-Repo commit `6ee13556f895ef3212e727d6aa405886e2f859f3`
+(U3k 20.3.4.22, piers branch), released as BigDaddy 1.0.6.
+Includes searchable skin settings, responsive setting toggles, expanded
+person/crew artwork views and improved content-background fallbacks.
 
 ## Target and installation
 
 Target: [CroqueMr LibreELEC x86 DV R1.0.0-Beta4](https://github.com/CroqueMr/libreelec-x86-DV/releases/tag/R1.0.0-Beta4),
 LibreELEC 13.0 with Kodi 22 RC1 and GUI API 5.18.0.
-Kodi declares backward compatibility with the skin's required GUI API 5.17.0;
-the helper dependency minimums have not been lowered.
+This release follows upstream's move to Kodi 22 and requires GUI API 5.18.0;
+it is not an update for Kodi 21. The helper dependency minimums have not been lowered.
 
 Install **Arctic Fuse 3 (BigDaddy)** from **Look and feel > Skin** in the
 bigdaddy-cpm Kodi repository at https://bigdaddy-cpm.github.io/.
@@ -21,8 +21,8 @@ Its separate ID, `skin.arctic.fuse.3.bigdaddy`, keeps the original skin and its
 widget settings untouched. This skin starts with its own settings; it does not
 automatically copy the original configuration or switch the active skin.
 
-Required helpers are Skin Variables 2.2.12+, Texture Maker 0.2.9+ and
-TMDbHelper 6.19.2+, plus the listed font/weather/studio resources.
+Required helpers are Skin Variables 2.2.18+, Texture Maker 0.2.9+ and
+TMDbHelper 6.21.5+, plus the listed font/weather/studio resources.
 Update Skin Variables and TMDbHelper from their official repositories before
 installing this release if your versions are below these minimums.
 For a fresh Kodi installation, install helpers from their official repositories first.

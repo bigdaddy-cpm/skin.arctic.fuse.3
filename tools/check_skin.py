@@ -19,10 +19,10 @@ def validate():
     assert 'jurialmunkey' in manifest.attrib['provider-name']
     assert 'jamal2362' in manifest.attrib['provider-name']
     imports = {node.attrib['addon']: node.attrib for node in manifest.findall('requires/import')}
-    assert imports['xbmc.gui']['version'] == '5.17.0'
-    assert imports['script.skinvariables']['version'] == '2.2.12'
+    assert imports['xbmc.gui']['version'] == '5.18.0'
+    assert imports['script.skinvariables']['version'] == '2.2.18'
     assert imports['script.texturemaker']['version'] == '0.2.9'
-    assert imports['plugin.video.themoviedb.helper']['version'] == '6.19.2'
+    assert imports['plugin.video.themoviedb.helper']['version'] == '6.21.5'
     assert imports['resource.images.arctic.splash']['optional'] == 'true'
     assert imports['resource.images.arctic.splash']['version'] == '1.1.0'
     assert imports['resource.images.arctic.weather']['optional'] == 'true'
@@ -92,6 +92,34 @@ def validate():
             wizard_rules.append(rules)
     visit_actions(startup)
     assert wizard_rules and all('!Skin.HasSetting(DefaultConfig.InitDone)' in rules for rules in wizard_rules)
+    # Piers builds settings in SkinVariables. Keep the entry point, search,
+    # category/group links and native radiobutton state intact after merging.
+    settings_entry = ET.parse(ROOT / '1080i/SkinSettings.xml')
+    assert 'RunScript(script.skinvariables,run_skinsettings=special://skin/shortcuts/skinvariables-skinsettings.json)' in [
+        node.text for node in settings_entry.findall('onload')]
+    settings_template = ET.parse(ROOT / '1080i/script-skinvariables-skinsettings.xml')
+    templates = {node.findtext('description'): node for node in settings_template.findall('.//include')
+                 if node.find('description') is not None}
+    assert templates['Setting Radiobutton'].find("param[@name='control']").text == 'radiobutton'
+    assert templates['Search Edit'].find("param[@name='id']").text == '12'
+    skinsettings = json.loads((ROOT / 'shortcuts/skinvariables-skinsettings.json').read_text())
+    assert skinsettings['search']['mode'] == 'global'
+    for key, group in skinsettings['groups'].items():
+        assert group['category'] in skinsettings['categories'], key
+    for key, setting in skinsettings['settings'].items():
+        assert setting['group'] in skinsettings['groups'], key
+        assert setting['label'] and setting['onclick'], key
+        assert setting['control'] in ('button', 'radiobutton'), key
+        if setting['control'] == 'radiobutton':
+            assert setting['selected'], key
+    # Full home-screen presets overwrite widgets, so retain upstream's explicit
+    # yes/no confirmation; startup must never apply these presets automatically.
+    actions = ET.parse(ROOT / '1080i/Includes_Actions.xml')
+    preset = actions.find("include[@name='Action_SetupWizard_WidgetPreset']")
+    confirmation = preset.findtext('definition/onclick')
+    assert 'run_dialog=yesno' in confirmation and '$LOCALIZE[31848]' in confirmation
+    assert 'skinvariables-setupwizard-preset.json' in confirmation
+    assert 'skinvariables-setupwizard-preset.json' not in json.dumps(startup)
     settings_info = ET.parse(ROOT / '1080i/Includes_Settings.xml')
     assert any(SKIN_ID in (node.text or '') for node in settings_info.findall(".//param[@name='fallback']"))
     assert (ROOT / 'extras/backgrounds/blur/coal_blur.jpg').is_file()
