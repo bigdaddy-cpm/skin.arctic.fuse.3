@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includes>
 
-    <variable name="Action_SearchEnabled">
-        <value condition="!Skin.HasSetting(HomeSwitcher.DisableSearch)">true</value>
-    </variable>
-
-    <variable name="Action_PowerEnabled">
-        <value condition="!Skin.HasSetting(HomeSwitcher.LoopBack)">true</value>
-    </variable>
-
     <variable name="Action_FirstStart_HomeFocus">
         <value condition="Skin.HasSetting(HomeSwitcher.DisableFirstWidgetFocus)">SetFocus(300)</value>
         <value condition="!String.IsEmpty(Skin.String(HomeSwitcher.Home.Spotlight.Target))">SetFocus(310)</value>
@@ -198,6 +190,12 @@
         <onunload condition="$EXP[Exp_Shortcuts_WindowEditedSinceOpen]">Skin.SetString(Shortcuts.RebuildDateTime,$INFO[System.Date(yyyy-mm-dd)]_$INFO[System.Time(hh:mm:ss)])</onunload>
         <onunload condition="$EXP[Exp_Shortcuts_WindowEditedSinceOpen]">AlarmClock(rebuild_shortcuts,runscript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/skinvariables-build-templates.json",use_rules),00:01,silent)</onunload>
     </include>
+    <!-- Dialog version: rebuild the shortcut templates when the dialog closes, only if a menu was saved while it was open -->
+    <include name="Action_BuildShortcuts_Dialog_OnUnLoad">
+        <onload>SetProperty(Shortcuts.ReloadOnOpen,$INFO[Window(Home).Property(SkinVariables.ShortcutsNode.Reload)],Home)</onload>
+        <onunload condition="$EXP[Exp_Shortcuts_EditedSinceOpen]">Skin.SetString(Shortcuts.RebuildDateTime,$INFO[System.Date(yyyy-mm-dd)]_$INFO[System.Time(hh:mm:ss)])</onunload>
+        <onunload condition="$EXP[Exp_Shortcuts_EditedSinceOpen]">AlarmClock(rebuild_editor,runscript(script.skinvariables,"run_executebuiltin=special://skin/shortcuts/skinvariables-build-templates.json",use_rules),00:00,silent)</onunload>
+    </include>
 
     <include name="Action_Setting_Header_Onclick">
         <onclick condition="Skin.HasSetting(HomeSwitcher.DisableHeader)">Skin.Reset(HomeSwitcher.DisableDate)</onclick>
@@ -213,20 +211,6 @@
             <onclick condition="$PARAM[condition]">SetProperty(CustomDialogSettingsTitle,[CAPITALIZE]$PARAM[title][/CAPITALIZE],Home)</onclick>
             <onclick condition="$PARAM[condition]">SetProperty(CustomDialogSettingsItems,$PARAM[items],Home)</onclick>
             <onclick condition="$PARAM[condition]">ActivateWindow($PARAM[window])</onclick>
-        </definition>
-    </include>
-
-    <include name="Action_SetupWizard_Open">
-        <onclick>ClearProperty(SetupWizard.Page,Home)</onclick>
-        <onclick>SetProperty(SetupWizard.Index,0,Home)</onclick>
-        <onclick>ActivateWindow(1130)</onclick>
-    </include>
-
-    <!-- Opens a single wizard step without the rail -->
-    <include name="Action_SetupWizard_Page_Open">
-        <definition>
-            <onclick>SetProperty(SetupWizard.Page,$PARAM[page],Home)</onclick>
-            <onclick>ActivateWindow(1130)</onclick>
         </definition>
     </include>
 
@@ -290,20 +274,6 @@
         </definition>
     </include>
 
-    <include name="Action_OSD_SuspendAutoClose">
-        <onload condition="System.HasAlarm(osd_timeout)">SetProperty(osd_timeout_$PARAM[window],true,home)</onload>
-        <onload condition="System.HasAlarm(osd_timeout)">CancelAlarm(osd_timeout,true)</onload>
-        <onunload condition="!String.IsEmpty(Window(Home).Property(osd_timeout_$PARAM[window]))">AlarmClock(osd_timeout,RunScript(script.skinvariables,run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-closeosd.json,use_rules=True),$INFO[Skin.String(OSD_Timeout),00:,],silent)</onunload>
-        <onunload condition="!String.IsEmpty(Window(Home).Property(osd_timeout_$PARAM[window]))">ClearProperty(osd_timeout_$PARAM[window],home)</onunload>
-    </include>
-
-    <include name="Action_OSD_Button">
-        <onfocus condition="!String.IsEmpty(Skin.String(OSD_Timeout)) + [Window.IsVisible(videoosd) | Window.IsVisible(musicosd)]">AlarmClock(osd_timeout,RunScript(script.skinvariables,run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-closeosd.json,use_rules=True),$INFO[Skin.String(OSD_Timeout),00:,],silent)</onfocus>
-        <onunfocus>CancelAlarm(osd_timeout,true)</onunfocus>
-
-        <onclick condition="!String.IsEmpty(Skin.String(OSD_Timeout)) + [Window.IsVisible(videoosd) | Window.IsVisible(musicosd)]">AlarmClock(osd_timeout,RunScript(script.skinvariables,run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-closeosd.json,use_rules=True),$INFO[Skin.String(OSD_Timeout),00:,],silent)</onclick>
-    </include>
-
     <variable name="Action_OSD_WikiInfo">
         <value condition="VideoPlayer.Content(livetv)">runscript(script.wikipedia,wikipedia=$INFO[VideoPlayer.Title])</value>
         <value>RunScript(script.skinvariables,run_executebuiltin=special://skin/shortcuts/builtins/skinvariables-closeosd.json,use_rules=True,"command=ActivateWindow(1193)")</value>
@@ -327,17 +297,6 @@
 
         <onload condition="Skin.HasSetting(TMDbHelper.EnableData)">Skin.SetBool(TMDbHelper.Service)</onload>
         <onload condition="!Skin.HasSetting(TMDbHelper.EnableData)">Skin.Reset(TMDbHelper.Service)</onload>
-    </include>
-    <include name="_Action_Blur_OnUnload">
-        <param name="sourceimage">Art(fanart)</param>
-        <definition>
-            <onunload>SetProperty(TMDbHelper.Blur.SourceImage,$PARAM[sourceimage],Home)</onunload>
-        </definition>
-    </include>
-    <include name="Action_Blur_OnUnload">
-        <include content="_Action_Blur_OnUnload">
-            <param name="sourceimage">Art(fanart)|Property(fanart)</param>
-        </include>
     </include>
 
     <variable name="Action_Update_Color">
@@ -437,53 +396,5 @@
     <variable name="Action_FullscreenWidget_InfoButton">
         <value condition="Skin.HasSetting(Spotlight.UseMenuButton) + $EXP[Exp_Hubs_Spotlight_HasItems]">Action(contextmenu)</value>
         <value>Action(info)</value>
-    </variable>
-
-    <variable name="Action_RatingsMonitor">
-        <value condition="Skin.String(CustomRating.Movies.Item01,TMDb)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.Movies.Item01,Trakt)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.Movies.Item01,IMDb)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.Movies.Item01,Metacritic)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.Movies.Item01,RottenTomatoesCritic)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.Movies.Item01,RottenTomatoesUser)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.Movies.Item01,MDBList)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.Movies.Item01,Letterboxd)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.Movies.Item01,MyAnimeList)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.Movies.Item01,Awards)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-
-        <value condition="Skin.String(CustomRating.Movies.Item02,TMDb)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.Movies.Item02,Trakt)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.Movies.Item02,IMDb)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.Movies.Item02,Metacritic)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.Movies.Item02,RottenTomatoesCritic)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.Movies.Item02,RottenTomatoesUser)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.Movies.Item02,MDBList)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.Movies.Item02,Letterboxd)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.Movies.Item02,MyAnimeList)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.Movies.Item02,Awards)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-
-        <value condition="Skin.String(CustomRating.TVShows.Item01,TMDb)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.TVShows.Item01,Trakt)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.TVShows.Item01,IMDb)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.TVShows.Item01,Metacritic)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.TVShows.Item01,RottenTomatoesCritic)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.TVShows.Item01,RottenTomatoesUser)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.TVShows.Item01,MDBList)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.TVShows.Item01,Letterboxd)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.TVShows.Item01,MyAnimeList)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.TVShows.Item01,Awards)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-
-        <value condition="Skin.String(CustomRating.TVShows.Item02,TMDb)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.TVShows.Item02,Trakt)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.TVShows.Item02,IMDb)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.TVShows.Item02,Metacritic)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.TVShows.Item02,RottenTomatoesCritic)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.TVShows.Item02,RottenTomatoesUser)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.TVShows.Item02,MDBList)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.TVShows.Item02,Letterboxd)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.TVShows.Item02,MyAnimeList)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-        <value condition="Skin.String(CustomRating.TVShows.Item02,Awards)">Skin.Reset(TMDbHelper.DisableRatings)</value>
-
-        <value>Skin.SetBool(TMDbHelper.DisableRatings)</value>
     </variable>
 </includes>

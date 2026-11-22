@@ -3,10 +3,10 @@
 
 LibreELEC adaptation of [CE-Repo's Arctic Fuse 3 (U3k)](https://github.com/CE-Repo/skin.arctic.fuse.3),
 originally by jurialmunkey, with U3k changes by jamal2362.
-Updated through CE-Repo commit `6ee13556f895ef3212e727d6aa405886e2f859f3`
-(U3k 20.3.4.22, piers branch), released as BigDaddy 1.0.6.
-Includes searchable skin settings, responsive setting toggles, expanded
-person/crew artwork views and improved content-background fallbacks.
+Updated through CE-Repo commit `e7c0a9a6f3311fa4f31278ae14c5e597d50929cd`
+(U3k 21.3.5.8, piers branch), released as BigDaddy 1.0.7.
+Includes multisearch, redesigned playback controls and process-information cards,
+artwork and ratings fixes, settings search tags, weather and background updates.
 
 ## Target and installation
 
@@ -21,9 +21,9 @@ Its separate ID, `skin.arctic.fuse.3.bigdaddy`, keeps the original skin and its
 widget settings untouched. This skin starts with its own settings; it does not
 automatically copy the original configuration or switch the active skin.
 
-Required helpers are Skin Variables 2.2.18+, Texture Maker 0.2.9+ and
-TMDbHelper 6.21.5+, plus the listed font/weather/studio resources.
-Update Skin Variables and TMDbHelper from their official repositories before
+Required helpers are Skin Variables 2.3.12+, Texture Maker 0.2.9+ and
+TMDbHelper 6.22.2+, plus the listed font/weather-icon/studio resources.
+Update Skin Variables and TMDbHelper from [Jurialmunkey's repository](https://jurialmunkey.github.io/repository.jurialmunkey/) before
 installing this release if your versions are below these minimums.
 For a fresh Kodi installation, install helpers from their official repositories first.
 
@@ -31,9 +31,10 @@ For a fresh Kodi installation, install helpers from their official repositories 
 
 - Distinct identity throughout shortcut generation, skin users, settings and version labels.
 - Platform-aware LibreELEC/CoreELEC/Kodi startup label and accurate Kodi build text.
-- Optional Arctic Splash 1.1.0+ and Arctic Weather 1.0.4+ resources: bundled
-  backgrounds keep startup and weather cards usable without them. Install/update
-  these resources from their upstream repository for animated weather artwork.
+- Optional Arctic Splash 1.1.1+: bundled backgrounds keep startup and weather
+  cards usable without it. Upstream now uses Splash for forecast-card artwork
+  and no longer requires the separate Arctic Weather pack. Background style
+  packs are optional and use upstream's simple-background fallback when absent.
   No resource packages are silently downloaded or mirrored by this fork.
 - Removed the Android/NAND reboot shortcut from this LibreELEC-targeted fork.
 - Retained U3k artwork and information-bar features. The playback-info OSD button
@@ -42,6 +43,8 @@ For a fresh Kodi installation, install helpers from their official repositories 
   **Program add-ons** in the bigdaddy-cpm repository; no new mandatory dependency.
 - Added conditional DV rendering, display, transport, profile, enhancement-layer
   and render-usage fields to player information using Beta4's native window properties.
+  All eight fields are retained as scrollable video-row cards in the new process
+  display, including the GPU-availability guard. Empty/unsupported fields stay hidden.
   These fields hide when the build's enhanced player information is disabled or absent.
   Beta4's native O-key handler still cycles from player information to its rendering menu.
 - Native Kodi video settings remain in use; no Dolby Vision renderer, firmware,

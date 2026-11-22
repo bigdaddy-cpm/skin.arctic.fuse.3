@@ -1,12 +1,12 @@
-<addon id="skin.arctic.fuse.3.bigdaddy" name="Arctic Fuse 3 (BigDaddy)" provider-name="jurialmunkey, jamal2362, bigdaddy-cpm" version="1.0.6">
+<addon id="skin.arctic.fuse.3.bigdaddy" name="Arctic Fuse 3 (BigDaddy)" provider-name="jurialmunkey, jamal2362, bigdaddy-cpm" version="1.0.7">
     <requires>
         <import addon="xbmc.gui" version="5.18.0" />
-        <import addon="script.skinvariables" version="2.2.18" />
+
+        <import addon="script.skinvariables" version="2.3.12" />
         <import addon="script.texturemaker" version="0.2.9" />
-        <import addon="plugin.video.themoviedb.helper" version="6.21.5" />
+        <import addon="plugin.video.themoviedb.helper" version="6.22.2" />
         <import addon="resource.images.weathericons.white" version="0.0.1" />
-        <import addon="resource.images.arctic.splash" version="1.1.0" optional="true" />
-        <import addon="resource.images.arctic.weather" version="1.0.4" optional="true" />
+        <import addon="resource.images.arctic.splash" version="1.1.1" optional="true" />
         <import addon="resource.images.studios.coloured" version="0.0.1" />
         <import addon="resource.font.robotocjksc" version="0.0.3" />
     </requires>
@@ -35,7 +35,7 @@
         <license>Creative Commons Attribution Non-Commercial Share-Alike 4.0</license>
         <forum />
         <source>https://github.com/bigdaddy-cpm/skin.arctic.fuse.3</source>
-        <news>1.0.6: Merge U3k 20.3.4.22 (piers): searchable skin settings, responsive toggles, expanded person/crew artwork and improved background fallbacks. Requires Kodi 22 (GUI 5.18.0), Skin Variables 2.2.18+ and TMDbHelper 6.21.5+. Preserve LibreELEC labels, native DV diagnostics, BigDaddy Playback Info, existing hub settings and optional-resource fallbacks.</news>
+        <news>1.0.7: Merge U3k 21.3.5.8: multisearch, redesigned playback controls and process-information cards, artwork and ratings fixes, weather and background updates. Requires Kodi 22, Skin Variables 2.3.12+ and TMDbHelper 6.22.2+. Preserve LibreELEC identity, all eight native DV diagnostic fields, BigDaddy Playback Info and existing hub settings. Arctic Splash 1.1.1+ is optional; built-in fallbacks remain available.</news>
         <assets>
             <icon>icon.png</icon>
             <fanart>fanart.jpg</fanart>

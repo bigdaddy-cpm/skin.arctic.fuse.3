@@ -20,13 +20,12 @@ def validate():
     assert 'jamal2362' in manifest.attrib['provider-name']
     imports = {node.attrib['addon']: node.attrib for node in manifest.findall('requires/import')}
     assert imports['xbmc.gui']['version'] == '5.18.0'
-    assert imports['script.skinvariables']['version'] == '2.2.18'
+    assert imports['script.skinvariables']['version'] == '2.3.12'
     assert imports['script.texturemaker']['version'] == '0.2.9'
-    assert imports['plugin.video.themoviedb.helper']['version'] == '6.21.5'
+    assert imports['plugin.video.themoviedb.helper']['version'] == '6.22.2'
     assert imports['resource.images.arctic.splash']['optional'] == 'true'
-    assert imports['resource.images.arctic.splash']['version'] == '1.1.0'
-    assert imports['resource.images.arctic.weather']['optional'] == 'true'
-    assert imports['resource.images.arctic.weather']['version'] == '1.0.4'
+    assert imports['resource.images.arctic.splash']['version'] == '1.1.1'
+    assert 'resource.images.arctic.weather' not in imports
     assert manifest.find("extension[@point='xbmc.addon.metadata']/license").text == 'Creative Commons Attribution Non-Commercial Share-Alike 4.0'
     assert (ROOT / 'LICENSE.txt').is_file()
     count_xml = count_json = 0
@@ -39,6 +38,8 @@ def validate():
             assert not re.search(r'skin\.arctic\.fuse\.3(?!\.bigdaddy)', text), path
             assert 'rebootfromnand' not in text, path
             assert 'RebootToAndroid' not in text, path
+            assert 'Info_Line_Label_Pillbox_U3k' not in text, path
+            assert 'Info_StarRating_Pillbox_U3k' not in text, path
             if path.suffix == '.xmltemplate':
                 continue  # Generator fragments are not standalone XML documents.
             if path.suffix == '.json':
@@ -103,7 +104,8 @@ def validate():
     assert templates['Setting Radiobutton'].find("param[@name='control']").text == 'radiobutton'
     assert templates['Search Edit'].find("param[@name='id']").text == '12'
     skinsettings = json.loads((ROOT / 'shortcuts/skinvariables-skinsettings.json').read_text())
-    assert skinsettings['search']['mode'] == 'global'
+    assert skinsettings['search']['mode'] == 'mixed'
+    assert skinsettings['search']['category']['autohide'] is True
     for key, group in skinsettings['groups'].items():
         assert group['category'] in skinsettings['categories'], key
     for key, setting in skinsettings['settings'].items():
@@ -138,10 +140,11 @@ def validate():
         'Background_StartUp_Scene_Tokyo', 'Background_StartUp_Scene_Countryside',
         'Background_StartUp_Layered'}
     weather = ET.parse(ROOT / '1080i/Includes_Weather.xml')
-    artwork = weather.find("include[@name='Weather_Card_Artwork']/definition")
-    assert artwork.findtext('control/visible') == '!System.AddonIsEnabled(resource.images.arctic.weather)'
-    assert all('System.AddonIsEnabled(resource.images.arctic.weather)' in node.attrib['condition']
-               for node in artwork.findall('include'))
+    artwork = weather.find("include[@name='Weather_Card_Landscape_Artwork']/definition")
+    assert {node.findtext('visible') for node in artwork.findall('control')} == {
+        'System.AddonIsEnabled(resource.images.arctic.splash)',
+        '!System.AddonIsEnabled(resource.images.arctic.splash)'}
+    assert artwork.findall('control')[1].findtext('texture') == 'special://skin/extras/backgrounds/blur/coal_blur.jpg'
     settings = ET.parse(ROOT / '1080i/Settings.xml')
     assert any(node.text == 'RunAddon(service.libreelec.settings)' for node in settings.findall('.//onclick'))
     assert not (ROOT / '.github/workflows/dispatch_to_repo.yml').exists()
@@ -158,18 +161,36 @@ def validate():
     nav = ET.parse(ROOT / '1080i/VideoOSD.xml').find(".//control[@id='6091']")
     assert nav.find("onleft[.='6009']").attrib['condition'] == button.findtext('visible')
     assert nav.find("onleft[.='6008']").attrib['condition'] == '!System.AddonIsEnabled(script.bigdaddy.playbackinfo) + !System.AddonIsEnabled(script.tinyppi)'
+    osd = ET.parse(ROOT / '1080i/Includes_OSD.xml')
+    assert any(node.text == '6009' and node.attrib.get('condition') == button.findtext('visible')
+               for node in osd.findall('.//onright'))
     process = ET.parse(ROOT / '1080i/Dialog_DialogProcessInfo.xml')
     dv = process.find("include[@name='DialogProcessInfo_Items_DVObject']/definition/item")
     assert 'DV.Enhanced' in dv.findtext('visible')
     assert '!String.IsEmpty($PARAM[info])' in dv.findtext('visible')
     rows = process.findall(".//include[@content='DialogProcessInfo_Items_DVObject']")
     assert len(rows) == 8
+    video_cards = process.find("include[@name='DialogProcessInfo_Items_Video']/content")
+    assert len(video_cards.findall("include[@content='DialogProcessInfo_Items_DVObject']")) == 8
+    assert len(video_cards.findall("include[@content='DialogProcessInfo_Node']")) == 4
+    assert process.find("include[@name='DialogProcessInfo_Lane']/definition/control/control[@type='list']/orientation").text == 'horizontal'
     gpu = next(row for row in rows if row.find("param[@name='info']").text.endswith('(DV.GPURender)'))
     assert 'condition' not in gpu.attrib
     assert 'DV.GPUAvailable' in gpu.find("param[@name='visible']").text
     expected_properties = {'Mode', 'Display', 'Transport', 'Profile', 'FEL', 'GPURender', 'TVProfile', 'SignalIntent'}
     assert {row.find("param[@name='info']").text for row in rows} == {
         'Window(playerprocessinfo).Property(DV.%s)' % prop for prop in expected_properties}
+    search = ET.parse(ROOT / '1080i/Custom_1105_Search.xml')
+    assert any('run_multisearch' in (node.text or '') for node in search.findall('onload'))
+    assert (ROOT / '1080i/script-skinvariables-multisearch.xml').is_file()
+    images = ET.parse(ROOT / '1080i/Includes_Images.xml')
+    style_path = images.find("variable[@name='Image_StyledBackground_Path']/value")
+    assert style_path.attrib['condition'] == '![$EXP[Exp_Background_HasStylePack]]'
+    assert not style_path.text  # Missing optional style packs must not yield broken resource paths.
+    weather_window = ET.parse(ROOT / '1080i/MyWeather.xml')
+    weather_fallback = next(node for node in weather_window.findall('.//control')
+                            if node.findtext('texture') == 'special://skin/extras/backgrounds/blur/coal_blur.jpg')
+    assert weather_fallback.findtext('visible') == '!System.AddonIsEnabled(resource.images.arctic.splash)'
     strings = (ROOT / 'language/resource.language.en_gb/strings.po').read_text(encoding='utf-8')
     for label in range(31980, 31988):
         assert strings.count('msgctxt "#%d"' % label) == 1
@@ -201,7 +222,12 @@ def build(manifest):
         assert ET.fromstring(archive.read(SKIN_ID + '/addon.xml')).attrib == manifest.attrib
         assert all(name.startswith(SKIN_ID + '/') and '..' not in name.split('/')
                    for name in archive.namelist())
-        assert SKIN_ID + '/media/Textures.xbt' in archive.namelist()
+        # Upstream now ships loose textures rather than a prebuilt Textures.xbt.
+        # Kodi loads these directly from media; require the new UI assets so a
+        # source-only or stale texture bundle cannot silently pass packaging.
+        for texture in ('common/gradient-v.png', 'common/dialog.png',
+                        'common/box-focus-outlined.png'):
+            assert SKIN_ID + '/media/' + texture in archive.namelist()
         assert SKIN_ID + '/media/u3k/discart.png' in archive.namelist()
     print('Built %s (%d files, %d bytes)' % (output, len(files), output.stat().st_size))
     print('SHA256: ' + hashlib.sha256(output.read_bytes()).hexdigest())

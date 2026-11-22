@@ -117,22 +117,6 @@
                     "value": "Skin.SetString(Navigation.OnBack,Parent)"
                 }],
                 [{
-                    "rules": ["String.IsEmpty(Skin.String(CustomRating.Movies.Item01))"],
-                    "value": "Skin.SetString(CustomRating.Movies.Item01,Trakt)"
-                }],
-                [{
-                    "rules": ["String.IsEmpty(Skin.String(CustomRating.Movies.Item02))"],
-                    "value": "Skin.SetString(CustomRating.Movies.Item02,Metacritic)"
-                }],
-                [{
-                    "rules": ["String.IsEmpty(Skin.String(CustomRating.TVShows.Item01))"],
-                    "value": "Skin.SetString(CustomRating.TVShows.Item01,Trakt)"
-                }],
-                [{
-                    "rules": ["String.IsEmpty(Skin.String(CustomRating.TVShows.Item02))"],
-                    "value": "Skin.SetString(CustomRating.TVShows.Item02,Metacritic)"
-                }],
-                [{
                     "rules": ["String.IsEmpty(Skin.String(DialogInfo.Movies.Item01))"],
                     "value": "Skin.SetString(DialogInfo.Movies.Item01,Trailer)"
                 }],
@@ -159,10 +143,6 @@
                 [{
                     "rules": ["String.IsEmpty(Skin.String(HomeSwitcher.Home.Mode))"],
                     "value": "Skin.SetString(HomeSwitcher.Home.Mode,Standard)"
-                }],
-                [{
-                    "rules": ["String.IsEmpty(Skin.String(HomeSwitcher.Search.Mode))"],
-                    "value": "Skin.SetString(HomeSwitcher.Search.Mode,Combined)"
                 }],
                 [{
                     "rules": ["String.IsEmpty(Skin.String(HomeSwitcher.1101.Mode))"],
@@ -195,6 +175,46 @@
                 [{
                     "rules": ["String.IsEmpty(Skin.String(HomeSwitcher.1109.Mode))"],
                     "value": "Skin.SetString(HomeSwitcher.1109.Mode,Standard)"
+                }],
+                [{
+                    "rules": ["String.IsEmpty(Skin.String(HomeSwitcher.Search.Style.Movie))"],
+                    "value": "Skin.SetString(HomeSwitcher.Search.Style.Movie,Poster)"
+                }],
+                [{
+                    "rules": ["String.IsEmpty(Skin.String(HomeSwitcher.Search.Style.Set))"],
+                    "value": "Skin.SetString(HomeSwitcher.Search.Style.Set,Poster)"
+                }],
+                [{
+                    "rules": ["String.IsEmpty(Skin.String(HomeSwitcher.Search.Style.TVShow))"],
+                    "value": "Skin.SetString(HomeSwitcher.Search.Style.TVShow,Poster)"
+                }],
+                [{
+                    "rules": ["String.IsEmpty(Skin.String(HomeSwitcher.Search.Style.Season))"],
+                    "value": "Skin.SetString(HomeSwitcher.Search.Style.Season,Poster)"
+                }],
+                [{
+                    "rules": ["String.IsEmpty(Skin.String(HomeSwitcher.Search.Style.Episode))"],
+                    "value": "Skin.SetString(HomeSwitcher.Search.Style.Episode,Landscape)"
+                }],
+                [{
+                    "rules": ["String.IsEmpty(Skin.String(HomeSwitcher.Search.Style.MusicVideo))"],
+                    "value": "Skin.SetString(HomeSwitcher.Search.Style.MusicVideo,Landscape)"
+                }],
+                [{
+                    "rules": ["String.IsEmpty(Skin.String(HomeSwitcher.Search.Style.Artist))"],
+                    "value": "Skin.SetString(HomeSwitcher.Search.Style.Artist,Square)"
+                }],
+                [{
+                    "rules": ["String.IsEmpty(Skin.String(HomeSwitcher.Search.Style.Album))"],
+                    "value": "Skin.SetString(HomeSwitcher.Search.Style.Album,Square)"
+                }],
+                [{
+                    "rules": ["String.IsEmpty(Skin.String(HomeSwitcher.Search.Style.Song))"],
+                    "value": "Skin.SetString(HomeSwitcher.Search.Style.Song,Square)"
+                }],
+                [{
+                    "rules": ["String.IsEmpty(Skin.String(HomeSwitcher.Search.Style.Default))"],
+                    "value": "Skin.SetString(HomeSwitcher.Search.Style.Default,Square)"
                 }],
                 [{
                     "rules": ["Skin.HasSetting(TMDbHelper.Service)"],
