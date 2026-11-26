@@ -3,10 +3,10 @@
 
 LibreELEC adaptation of [CE-Repo's Arctic Fuse 3 (U3k)](https://github.com/CE-Repo/skin.arctic.fuse.3),
 originally by jurialmunkey, with U3k changes by jamal2362.
-Updated through CE-Repo commit `e7c0a9a6f3311fa4f31278ae14c5e597d50929cd`
-(U3k 21.3.5.8, piers branch), released as BigDaddy 1.0.7.
-Includes multisearch, redesigned playback controls and process-information cards,
-artwork and ratings fixes, settings search tags, weather and background updates.
+Updated through CE-Repo commit `0dc1747ebaf3378a90f101edd354876c791b77ca`
+(U3k 21.3.5.11, piers branch), released as BigDaddy 1.0.8.
+Includes add-on browser search, Simple hubs, layout/icon selectors, per-hub
+play/browse actions, ratings/subtitle fixes and weather/FlixArt options.
 
 ## Target and installation
 
@@ -27,6 +27,12 @@ Update Skin Variables and TMDbHelper from [Jurialmunkey's repository](https://ju
 installing this release if your versions are below these minimums.
 For a fresh Kodi installation, install helpers from their official repositories first.
 
+Before updating, switch temporarily to Estuary. If Arctic Splash is installed,
+update it to 1.1.1 or newer first: Kodi enforces the minimum version even for an
+optional dependency when it is already installed. An outdated installed Splash
+can abort the update after Kodi unloads the active skin. Restart Kodi after
+installation, then switch back to BigDaddy. Do not delete your skin settings.
+
 ## Adaptations
 
 - Distinct identity throughout shortcut generation, skin users, settings and version labels.
@@ -35,6 +41,8 @@ For a fresh Kodi installation, install helpers from their official repositories 
   cards usable without it. Upstream now uses Splash for forecast-card artwork
   and no longer requires the separate Arctic Weather pack. Background style
   packs are optional and use upstream's simple-background fallback when absent.
+  Weather cards also fall back to bundled artwork if an installed resource pack
+  lacks the requested weather image; style-pack weather works without Splash.
   No resource packages are silently downloaded or mirrored by this fork.
 - Removed the Android/NAND reboot shortcut from this LibreELEC-targeted fork.
 - Retained U3k artwork and information-bar features. The playback-info OSD button

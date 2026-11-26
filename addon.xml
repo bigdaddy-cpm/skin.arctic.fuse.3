@@ -1,4 +1,4 @@
-<addon id="skin.arctic.fuse.3.bigdaddy" name="Arctic Fuse 3 (BigDaddy)" provider-name="jurialmunkey, jamal2362, bigdaddy-cpm" version="1.0.7">
+<addon id="skin.arctic.fuse.3.bigdaddy" name="Arctic Fuse 3 (BigDaddy)" provider-name="jurialmunkey, jamal2362, bigdaddy-cpm" version="1.0.8">
     <requires>
         <import addon="xbmc.gui" version="5.18.0" />
 
@@ -35,7 +35,7 @@
         <license>Creative Commons Attribution Non-Commercial Share-Alike 4.0</license>
         <forum />
         <source>https://github.com/bigdaddy-cpm/skin.arctic.fuse.3</source>
-        <news>1.0.7: Merge U3k 21.3.5.8: multisearch, redesigned playback controls and process-information cards, artwork and ratings fixes, weather and background updates. Requires Kodi 22, Skin Variables 2.3.12+ and TMDbHelper 6.22.2+. Preserve LibreELEC identity, all eight native DV diagnostic fields, BigDaddy Playback Info and existing hub settings. Arctic Splash 1.1.1+ is optional; built-in fallbacks remain available.</news>
+        <news>1.0.8: Merge U3k 21.3.5.11: add-on browser search, Simple hubs, layout/icon selectors, per-hub play/browse actions, ratings/subtitle fixes and weather/FlixArt options. Preserve LibreELEC identity, eight native DV fields, BigDaddy Playback Info and hub settings. Requirements unchanged: Kodi 22, Skin Variables 2.3.12+, TMDbHelper 6.22.2+. If Arctic Splash is already installed, update it to 1.1.1+ before updating the skin; switch to Estuary during installation.</news>
         <assets>
             <icon>icon.png</icon>
             <fanart>fanart.jpg</fanart>

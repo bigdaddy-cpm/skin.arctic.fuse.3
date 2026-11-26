@@ -55,6 +55,7 @@ def validate():
                 assert (ROOT / '1080i' / filename).is_file(), (path, filename)
     generator = json.loads((ROOT / 'shortcuts/skinvariables-generator.json').read_text())
     assert generator['skinid'] == SKIN_ID
+    assert generator['buildv'] == '0.3.18'  # Rebuild existing hubs for upstream's new layouts.
     for entry in generator['genxml']:
         assert (ROOT / 'shortcuts' / entry['datafile']).is_file(), entry
     # New hub menus must stay in this fork's settings namespace and retain
@@ -142,9 +143,11 @@ def validate():
     weather = ET.parse(ROOT / '1080i/Includes_Weather.xml')
     artwork = weather.find("include[@name='Weather_Card_Landscape_Artwork']/definition")
     assert {node.findtext('visible') for node in artwork.findall('control')} == {
-        'System.AddonIsEnabled(resource.images.arctic.splash)',
-        '!System.AddonIsEnabled(resource.images.arctic.splash)'}
+        'System.AddonIsEnabled(resource.images.arctic.splash) | $EXP[Exp_Background_HasStylePack]',
+        '!System.AddonIsEnabled(resource.images.arctic.splash) + !$EXP[Exp_Background_HasStylePack]'}
     assert artwork.findall('control')[1].findtext('texture') == 'special://skin/extras/backgrounds/blur/coal_blur.jpg'
+    assert artwork.find('control/texture').attrib['fallback'] == 'special://skin/extras/backgrounds/blur/coal_blur.jpg'
+    assert weather.find("include[@name='Weather_Card_Landscape_Artwork']/param[@name='path']").text == '$VAR[Image_Weather_Fanart_Path]'
     settings = ET.parse(ROOT / '1080i/Settings.xml')
     assert any(node.text == 'RunAddon(service.libreelec.settings)' for node in settings.findall('.//onclick'))
     assert not (ROOT / '.github/workflows/dispatch_to_repo.yml').exists()
@@ -222,9 +225,8 @@ def build(manifest):
         assert ET.fromstring(archive.read(SKIN_ID + '/addon.xml')).attrib == manifest.attrib
         assert all(name.startswith(SKIN_ID + '/') and '..' not in name.split('/')
                    for name in archive.namelist())
-        # Upstream now ships loose textures rather than a prebuilt Textures.xbt.
-        # Kodi loads these directly from media; require the new UI assets so a
-        # source-only or stale texture bundle cannot silently pass packaging.
+        # Preserve upstream's rebuilt texture bundle and loose texture fallbacks.
+        assert SKIN_ID + '/media/Textures.xbt' in archive.namelist()
         for texture in ('common/gradient-v.png', 'common/dialog.png',
                         'common/box-focus-outlined.png'):
             assert SKIN_ID + '/media/' + texture in archive.namelist()
